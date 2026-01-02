@@ -6,4 +6,9 @@
     </style>
 
     <style name="Theme.NityaAarti" parent="Base.Theme.NityaAarti" />
+
+    <style name="CircleShape">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
