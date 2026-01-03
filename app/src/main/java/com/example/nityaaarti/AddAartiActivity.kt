@@ -74,8 +74,8 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "दशावतारांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती सप्रेम जय जय विठ्ठल परब्रह्म"))
 
-        // -- दशावतारांची आरती --
-        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "दशावतारांची आरती"))
+        // -- प्रार्थना --
+        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "प्रार्थना"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "घालीन लोटांगण"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "मंत्रपुष्पांजली"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "पसायदान"))
