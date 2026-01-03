@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:paddingTop="16dp"
-        android:paddingHorizontal="16dp"
+        android:paddingHorizontal="5dp"
         android:clipToPadding="false"
         android:paddingBottom="80dp"
         android:visibility="gone"
