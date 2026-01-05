@@ -1,6 +1,7 @@
 package com.example.nityaaarti
 
 import android.content.Context
+import androidx.core.content.edit
 
 object AartiStorage {
     private const val PREF_NAME = "MyAartiPrefs"
@@ -19,5 +20,16 @@ object AartiStorage {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         val set = prefs.getStringSet(KEY_AARTIS, emptySet()) ?: emptySet()
         return set.toList().sorted() // Return sorted list
+    }
+
+    fun removeAarti(context: Context, aartiName: String) {
+        val prefs = context.getSharedPreferences("MyAartiPrefs", Context.MODE_PRIVATE)
+        val currentSet = prefs.getStringSet("saved_aartis", mutableSetOf()) ?: mutableSetOf()
+
+        val newSet = HashSet(currentSet)
+        if (newSet.contains(aartiName)) {
+            newSet.remove(aartiName)
+            prefs.edit { putStringSet("saved_aartis", newSet) }
+        }
     }
 }

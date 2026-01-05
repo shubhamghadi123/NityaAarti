@@ -1,6 +1,8 @@
 package com.example.nityaaarti
 
 import android.content.Intent
+import android.graphics.Color
+import android.widget.Toast
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -45,17 +47,26 @@ class MainActivity : AppCompatActivity() {
         val savedList = AartiStorage.getSavedAartis(this)
 
         if (savedList.isNotEmpty()) {
-            // SHOW LIST
             emptyState.visibility = View.GONE
             recyclerView.visibility = View.VISIBLE
 
             recyclerView.layoutManager = LinearLayoutManager(this)
-            recyclerView.adapter = HomeAdapter(savedList) { selectedName ->
-                // Open Read Screen when clicked
-                val intent = Intent(this, ReadAartiActivity::class.java)
-                intent.putExtra("AARTI_NAME", selectedName)
-                startActivity(intent)
-            }
+
+            // UPDATED ADAPTER INITIALIZATION
+            recyclerView.adapter = HomeAdapter(
+                aartiList = savedList,
+                onReadClick = { selectedName ->
+                    // Open Read Screen
+                    val intent = Intent(this, ReadAartiActivity::class.java)
+                    intent.putExtra("AARTI_NAME", selectedName)
+                    startActivity(intent)
+                },
+                onDeleteClick = { nameToDelete ->
+                    AartiStorage.removeAarti(this, nameToDelete)
+                    loadSavedAartis()
+                    Toast.makeText(this, "Removed", Toast.LENGTH_SHORT).show()
+                }
+            )
         } else {
             emptyState.visibility = View.VISIBLE
             recyclerView.visibility = View.GONE
@@ -65,12 +76,13 @@ class MainActivity : AppCompatActivity() {
 
 class HomeAdapter(
     private val aartiList: List<String>,
-    private val onClick: (String) -> Unit
+    private val onReadClick: (String) -> Unit,
+    private val onDeleteClick: (String) -> Unit
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
     class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tvAartiName)
-        val btnAdd: ImageView = view.findViewById(R.id.btnAdd)
+        val btnAction: ImageView = view.findViewById(R.id.btnAdd) // We reuse the existing ID
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -82,9 +94,17 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: HomeViewHolder, position: Int) {
         val name = aartiList[position]
         holder.tvName.text = name
-        holder.btnAdd.visibility = View.GONE
+
+        holder.btnAction.visibility = View.VISIBLE
+        holder.btnAction.setImageResource(R.drawable.round_delete_forever_24)
+        holder.btnAction.setColorFilter(Color.RED)
+
+        holder.btnAction.setOnClickListener {
+            onDeleteClick(name)
+        }
+
         holder.itemView.setOnClickListener {
-            onClick(name)
+            onReadClick(name)
         }
     }
 
