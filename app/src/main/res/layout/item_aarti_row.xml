@@ -8,7 +8,7 @@
     android:layout_marginBottom="15dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp"
-    app:cardBackgroundColor="#FFF3E0">
+    app:cardBackgroundColor="#FFD8BF">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Sukhakarta Dukhaharta"
-            android:textColor="#3E2723"
+            android:textColor="#3A2521"
             android:textSize="16sp"
             android:paddingStart="5dp"/>
 
