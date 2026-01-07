@@ -16,6 +16,15 @@
         android:gravity="center_vertical"
         android:padding="15dp">
 
+        <ImageView
+            android:id="@+id/imgDragHandle"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/round_drag_handle_24"
+            app:tint="#D84315"
+            android:layout_marginEnd="12dp"
+            android:contentDescription="Drag to move"/>
+
         <TextView
             android:id="@+id/tvAartiName"
             android:layout_width="0dp"
