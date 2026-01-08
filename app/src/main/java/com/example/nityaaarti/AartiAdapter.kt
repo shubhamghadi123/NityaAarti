@@ -27,21 +27,6 @@ class AartiAdapter(
         }
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = items[position]
-
-        if (holder is HeaderViewHolder) {
-            holder.tvTitle.text = item.name
-        } else if (holder is AartiViewHolder) {
-            holder.tvName.text = item.name
-
-            // Handle the + button click
-            holder.btnAdd.setOnClickListener {
-                onAddClick(item.name) // Pass the name back to the Activity
-            }
-        }
-    }
-
     override fun getItemCount(): Int = items.size
 
     class HeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -51,5 +36,23 @@ class AartiAdapter(
     class AartiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvAartiName)
         val btnAdd: ImageView = itemView.findViewById(R.id.btnAdd)
+        // 1. Add this reference
+        val imgDrag: ImageView = itemView.findViewById(R.id.imgDragHandle)
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val item = items[position]
+
+        if (holder is HeaderViewHolder) {
+            holder.tvTitle.text = item.name
+        } else if (holder is AartiViewHolder) {
+            holder.tvName.text = item.name
+
+            holder.imgDrag.visibility = View.GONE
+
+            holder.btnAdd.setOnClickListener {
+                onAddClick(item.name)
+            }
+        }
     }
 }

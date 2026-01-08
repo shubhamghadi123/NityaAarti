@@ -46,7 +46,6 @@ class AddAartiActivity : AppCompatActivity() {
         // -- देवीची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "देवीची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "दुर्गे दुर्घट भारी"))
-        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "Aarti Saprem"))
 
         // -- श्री हनुमंताची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री हनुमंताची आरती"))

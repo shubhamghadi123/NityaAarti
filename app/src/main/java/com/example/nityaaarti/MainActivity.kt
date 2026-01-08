@@ -21,13 +21,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Collections
-import androidx.core.graphics.toColorInt
 
 class MainActivity : AppCompatActivity() {
 
     private var aartiList = mutableListOf<String>()
     private lateinit var adapter: HomeAdapter
-    // 1. Declare helper here so we can use it in the Adapter callback
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +60,6 @@ class MainActivity : AppCompatActivity() {
             recyclerView.visibility = View.VISIBLE
             recyclerView.layoutManager = LinearLayoutManager(this)
 
-            // 2. Initialize Adapter with ALL 4 arguments
             adapter = HomeAdapter(
                 aartiList = aartiList,
                 onReadClick = { name ->
@@ -72,15 +69,15 @@ class MainActivity : AppCompatActivity() {
                 },
                 onDeleteClick = { name ->
                     AartiStorage.removeAarti(this, name)
-                    loadSavedAartis()
+                    loadSavedAartis() // Refresh immediately
                 },
                 onStartDrag = { viewHolder ->
-                    // This starts the drag immediately when handle is touched
                     itemTouchHelper.startDrag(viewHolder)
                 }
             )
             recyclerView.adapter = adapter
 
+            // Initialize the helper AFTER adapter is set
             setupDragAndDrop(recyclerView)
 
         } else {
@@ -93,7 +90,6 @@ class MainActivity : AppCompatActivity() {
         val callback = object : ItemTouchHelper.Callback() {
 
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
-                // Enable Up and Down dragging
                 return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
             }
 
@@ -104,32 +100,37 @@ class MainActivity : AppCompatActivity() {
             ): Boolean {
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
+
+                // Swap data
                 Collections.swap(aartiList, fromPos, toPos)
+                // Notify adapter
                 adapter.notifyItemMoved(fromPos, toPos)
+
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) { /* Not used */ }
 
-            // 3. Highlight Logic: Change color when picked up
+            // Highlight logic
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
-                    // Darker Orange when dragging
                     if (viewHolder?.itemView is CardView) {
-                        (viewHolder.itemView as CardView).setCardBackgroundColor("#FFE0B2".toColorInt())
+                        // Using standard Color parsing
+                        (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFE0B2"))
                     }
                 }
             }
 
-            // 4. Restore Color: Reset when dropped
+            // Restore logic
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
+                // Save new order
                 AartiStorage.saveAartiList(this@MainActivity, aartiList)
 
-                // Back to Light Orange
+                // Reset color
                 if (viewHolder.itemView is CardView) {
-                    (viewHolder.itemView as CardView).setCardBackgroundColor("#FFF3E0".toColorInt())
+                    (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFF3E0"))
                 }
             }
         }
@@ -139,7 +140,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// --- FIXED ADAPTER ---
+// --- ADAPTER ---
 class HomeAdapter(
     private val aartiList: List<String>,
     private val onReadClick: (String) -> Unit,
@@ -149,8 +150,8 @@ class HomeAdapter(
 
     class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tvAartiName)
-        val btnAction: ImageView = view.findViewById(R.id.btnAdd)
-        val imgDrag: ImageView = view.findViewById(R.id.imgDragHandle)
+        val btnAction: ImageView = view.findViewById(R.id.btnAdd) // Delete button
+        val imgDrag: ImageView = view.findViewById(R.id.imgDragHandle) // Drag handle
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -164,20 +165,22 @@ class HomeAdapter(
         val name = aartiList[position]
         holder.tvName.text = name
 
+        // Configure Delete Button
         holder.btnAction.setImageResource(R.drawable.round_delete_forever_24)
         holder.btnAction.setColorFilter(Color.RED)
 
-        // --- FIXED DELETE LOGIC ---
         holder.btnAction.setOnClickListener {
             onDeleteClick(name)
         }
 
-        // Read Click
+        // Configure Read Click
         holder.itemView.setOnClickListener {
             onReadClick(name)
         }
 
-        // Drag Handle Logic
+        holder.imgDrag.visibility = View.VISIBLE
+
+        // Configure Drag Handle
         holder.imgDrag.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_DOWN) {
                 onStartDrag(holder)
