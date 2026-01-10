@@ -58,7 +58,7 @@ class AddAartiActivity : AppCompatActivity() {
 
         // -- श्री विठ्ठलाची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री विठ्ठलाची आरती"))
-        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "युगे अठ्ठावीस"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "युगे अठ्ठावीस विटेवरी उभा"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "येई हो विठ्ठले माझे माउली ये"))
 
         // -- साईबाबांची आरती --
