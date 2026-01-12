@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="40dp"
@@ -39,7 +39,10 @@
         android:textColor="#FFFFFF"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constrainedWidth="true"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingStart="56dp"
+        android:paddingEnd="56dp"
         app:layout_constraintBottom_toBottomOf="@+id/headerBg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

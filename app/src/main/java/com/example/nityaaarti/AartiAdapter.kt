@@ -9,7 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AartiAdapter(
     private val items: List<AartiListItem>,
-    private val onAddClick: (String) -> Unit
+    private val onAddClick: (String) -> Unit,
+    private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     override fun getItemViewType(position: Int): Int {
@@ -36,7 +37,6 @@ class AartiAdapter(
     class AartiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvName: TextView = itemView.findViewById(R.id.tvAartiName)
         val btnAdd: ImageView = itemView.findViewById(R.id.btnAdd)
-        // 1. Add this reference
         val imgDrag: ImageView = itemView.findViewById(R.id.imgDragHandle)
     }
 
@@ -52,6 +52,10 @@ class AartiAdapter(
 
             holder.btnAdd.setOnClickListener {
                 onAddClick(item.name)
+            }
+
+            holder.itemView.setOnClickListener {
+                onItemClick(item.name)
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.nityaaarti
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ImageView
 import android.widget.Toast
@@ -82,10 +83,21 @@ class AddAartiActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerAllAartis)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val adapter = AartiAdapter(aartiList) { selectedAartiName ->
-            AartiStorage.addAarti(this, selectedAartiName)
-            Toast.makeText(this, "$selectedAartiName added to Home!", Toast.LENGTH_SHORT).show()
-        }
+        val adapter = AartiAdapter(
+            items = aartiList, // your list variable
+            onAddClick = { aartiName ->
+                // Existing logic to add aarti
+                AartiStorage.addAarti(this, aartiName)
+                Toast.makeText(this, "$aartiName added!", Toast.LENGTH_SHORT).show()
+            },
+            onItemClick = { aartiName ->
+                // NEW LOGIC: Open Read Screen
+                val intent = Intent(this, ReadAartiActivity::class.java)
+                intent.putExtra("AARTI_NAME", aartiName)
+                intent.putExtra("HIDE_NAV",true)
+                startActivity(intent)
+            }
+        )
 
         recyclerView.adapter = adapter
     }

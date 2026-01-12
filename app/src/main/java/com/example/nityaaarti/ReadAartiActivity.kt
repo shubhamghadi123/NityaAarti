@@ -8,6 +8,7 @@ import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -50,6 +51,15 @@ class ReadAartiActivity : AppCompatActivity() {
         // New Buttons
         val btnPrev = findViewById<TextView>(R.id.btnPrev)
         val btnNext = findViewById<TextView>(R.id.btnNext)
+
+        val bottomBar = findViewById<LinearLayout>(R.id.bottomBar)
+        val shouldHideNav = intent.getBooleanExtra("HIDE_NAV", false)
+        if (shouldHideNav) {
+            bottomBar.visibility = View.GONE
+        } else {
+            bottomBar.visibility = View.VISIBLE
+        }
+
         scrollView = findViewById<ScrollView>(R.id.scrollView)
 
         // Load Zoom Settings
