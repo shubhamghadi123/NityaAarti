@@ -37,7 +37,7 @@
         android:layout_marginTop="40dp"
         android:text="Title"
         android:textColor="#FFFFFF"
-        android:textSize="24sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constrainedWidth="true"
         app:layout_constraintBottom_toBottomOf="@+id/headerBg"
@@ -58,11 +58,12 @@
         app:layout_constraintTop_toBottomOf="@+id/headerBg" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="24dp"
         android:clipToPadding="false"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintTop_toBottomOf="@+id/headerBg">
 
         <TextView
@@ -75,5 +76,41 @@
             android:gravity="center_horizontal"/>
 
     </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:background="#FFE0B2"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btnPrev"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="8dp"
+            android:text="Prev"
+            android:textSize="16sp"
+            app:icon="@drawable/round_arrow_back_ios_24"
+            app:iconGravity="start"
+            android:backgroundTint="#E78B18"/>
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginHorizontal="8dp"
+            android:text="Next"
+            android:textSize="16sp"
+            app:icon="@drawable/round_arrow_forward_ios_24"
+            app:iconGravity="end"
+            android:backgroundTint="#E78B18"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

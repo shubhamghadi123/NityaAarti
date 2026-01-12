@@ -53,7 +53,7 @@ class AddAartiActivity : AppCompatActivity() {
 
         // -- श्री गुरुदत्ता आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री गुरुदत्ता आरती"))
-        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "त्रिगुणात्मक त्रैमूर्ती दत्त हा जाणा"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "त्रिगुणात्मक त्रैमूर्ती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "धन्य धन्य हो प्रदक्षिणा"))
 
         // -- श्री विठ्ठलाची आरती --
