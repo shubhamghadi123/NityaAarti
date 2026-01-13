@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AartiAdapter(
     private val items: List<AartiListItem>,
+    private val savedAartis: List<String>,
     private val onAddClick: (String) -> Unit,
     private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -50,8 +51,15 @@ class AartiAdapter(
 
             holder.imgDrag.visibility = View.GONE
 
-            holder.btnAdd.setOnClickListener {
-                onAddClick(item.name)
+            if (savedAartis.contains(item.name)) {
+                holder.btnAdd.visibility = View.GONE
+            } else {
+                holder.btnAdd.visibility = View.VISIBLE
+
+                holder.btnAdd.setOnClickListener {
+                    onAddClick(item.name)
+                    holder.btnAdd.visibility = View.GONE
+                }
             }
 
             holder.itemView.setOnClickListener {

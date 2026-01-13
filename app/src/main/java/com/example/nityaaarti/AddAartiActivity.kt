@@ -83,18 +83,19 @@ class AddAartiActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerAllAartis)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
+        val alreadySaved = AartiStorage.getSavedAartis(this)
+
         val adapter = AartiAdapter(
-            items = aartiList, // your list variable
+            items = aartiList,      // Your full list
+            savedAartis = alreadySaved, // NEW: The saved list
             onAddClick = { aartiName ->
-                // Existing logic to add aarti
                 AartiStorage.addAarti(this, aartiName)
                 Toast.makeText(this, "$aartiName added!", Toast.LENGTH_SHORT).show()
             },
             onItemClick = { aartiName ->
-                // NEW LOGIC: Open Read Screen
                 val intent = Intent(this, ReadAartiActivity::class.java)
                 intent.putExtra("AARTI_NAME", aartiName)
-                intent.putExtra("HIDE_NAV",true)
+                intent.putExtra("HIDE_NAV", true)
                 startActivity(intent)
             }
         )
