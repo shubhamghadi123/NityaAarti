@@ -96,7 +96,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
-            android:text="Prev"
+            android:text="Prev (मागे)"
             android:textSize="16sp"
             app:icon="@drawable/round_arrow_back_ios_24"
             app:iconGravity="start"
@@ -108,12 +108,83 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginHorizontal="8dp"
-            android:text="Next"
+            android:text="Next (पुढे)"
             android:textSize="16sp"
             app:icon="@drawable/round_arrow_forward_ios_24"
             app:iconGravity="end"
             android:backgroundTint="#E78B18"/>
 
     </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/overlayTip"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#CBE9DA75"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:elevation="20dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/round_pinch_24"
+                app:tint="#E58A18"
+                android:layout_marginBottom="16dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pinch to Zoom"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="मोठे करण्यासाठी दोन बोटे पसरवा"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="लहान करण्यासाठी दोन बोटे जवळ आणा"
+                android:textColor="#000000"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tap anywhere to dismiss"
+                android:textColor="#000000"
+                android:textSize="14sp"
+                android:layout_marginTop="8dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="बंद करण्यासाठी कुठेही स्पर्श करा"
+                android:textColor="#000000"
+                android:textSize="12sp"
+                android:layout_marginTop="4dp"/>
+
+        </LinearLayout>
+    </FrameLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

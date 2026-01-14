@@ -5,35 +5,38 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="12dp"
     app:cardCornerRadius="10dp"
     app:cardElevation="2dp"
     app:cardBackgroundColor="#FFD8BF">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="60dp"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:padding="15dp">
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="12dp">
 
         <ImageView
             android:id="@+id/imgDragHandle"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/round_drag_handle_24"
-            app:tint="#D84315"
             android:layout_marginEnd="12dp"
-            android:contentDescription="Drag to move"/>
+            android:contentDescription="Drag to move"
+            android:src="@drawable/round_drag_handle_24"
+            app:tint="#D84315" />
 
         <TextView
             android:id="@+id/tvAartiName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Sukhakarta Dukhaharta"
-            android:textColor="#3A2521"
+            android:text="Aarti Name"
+            android:textColor="#3E2723"
             android:textSize="16sp"
-            android:paddingStart="5dp"/>
+            android:paddingStart="4dp"/>
 
         <ImageView
             android:id="@+id/btnAdd"
@@ -42,7 +45,7 @@
             android:src="@drawable/round_add_24"
             app:tint="#D84315"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Add to list" />
+            android:contentDescription="Action" />
 
     </LinearLayout>
 

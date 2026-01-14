@@ -7,6 +7,7 @@ import android.util.TypedValue
 import android.view.MotionEvent
 import android.view.ScaleGestureDetector
 import android.view.View
+import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -21,14 +22,20 @@ import kotlin.math.min
 
 class ReadAartiActivity : AppCompatActivity() {
 
+    companion object {
+        var hasSeenTipThisSession = false
+    }
+
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var currentTextSizeSp = 20f
+
+    // UI Variables
     private lateinit var tvLyrics: TextView
     private lateinit var tvTitle: TextView
     private lateinit var scrollView: ScrollView
     private lateinit var prefs: SharedPreferences
 
-    // --- NAVIGATION VARIABLES ---
+    // Navigation Variables
     private var aartiList = listOf<String>()
     private var currentIndex = 0
 
@@ -43,16 +50,40 @@ class ReadAartiActivity : AppCompatActivity() {
             insets
         }
 
-        // Initialize Views
         tvTitle = findViewById(R.id.tvTitle)
         tvLyrics = findViewById(R.id.tvLyrics)
-        val btnBack = findViewById<ImageView>(R.id.btnBack)
+        scrollView = findViewById(R.id.scrollView)
 
-        // New Buttons
+        val btnBack = findViewById<ImageView>(R.id.btnBack)
         val btnPrev = findViewById<TextView>(R.id.btnPrev)
         val btnNext = findViewById<TextView>(R.id.btnNext)
-
         val bottomBar = findViewById<LinearLayout>(R.id.bottomBar)
+        val overlayTip = findViewById<FrameLayout>(R.id.overlayTip)
+
+        prefs = getSharedPreferences("AartiSettings", Context.MODE_PRIVATE)
+        currentTextSizeSp = prefs.getFloat("FONT_SIZE", 20f)
+
+        tvLyrics.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTextSizeSp)
+
+        // ZOOM TIP OVERLAY LOGIC
+        if (!hasSeenTipThisSession) {
+            overlayTip.visibility = View.VISIBLE
+
+            // Mark it as seen immediately for the next Aarti
+            hasSeenTipThisSession = true
+
+            overlayTip.setOnClickListener {
+                overlayTip.animate()
+                    .alpha(0f)
+                    .setDuration(300)
+                    .withEndAction {
+                        overlayTip.visibility = View.GONE
+                    }
+            }
+        } else {
+            overlayTip.visibility = View.GONE
+        }
+
         val shouldHideNav = intent.getBooleanExtra("HIDE_NAV", false)
         if (shouldHideNav) {
             bottomBar.visibility = View.GONE
@@ -60,38 +91,26 @@ class ReadAartiActivity : AppCompatActivity() {
             bottomBar.visibility = View.VISIBLE
         }
 
-        scrollView = findViewById<ScrollView>(R.id.scrollView)
-
-        // Load Zoom Settings
-        prefs = getSharedPreferences("AartiSettings", Context.MODE_PRIVATE)
-        currentTextSizeSp = prefs.getFloat("FONT_SIZE", 20f)
-        tvLyrics.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTextSizeSp)
-
-        // --- NAVIGATION SETUP ---
-        // 1. Get the list of saved Aartis (in correct order)
+        // --- 5. LOAD DATA & NAVIGATION SETUP ---
         aartiList = AartiStorage.getSavedAartis(this)
-
-        // 2. Find which Aarti was clicked
         val initialName = intent.getStringExtra("AARTI_NAME") ?: ""
         currentIndex = aartiList.indexOf(initialName)
 
-        // 3. Load the data
         if (currentIndex != -1) {
             loadAartiData(currentIndex)
         } else {
-            // Fallback (Safe mode if something goes wrong)
             tvTitle.text = initialName
             tvLyrics.text = AartiRepository.getAartiLyrics(initialName)
             btnPrev.visibility = View.GONE
             btnNext.visibility = View.GONE
         }
 
-        // --- BUTTON CLICKS ---
+        // --- 6. BUTTON LISTENERS ---
         btnPrev.setOnClickListener {
             if (currentIndex > 0) {
                 currentIndex--
                 loadAartiData(currentIndex)
-                scrollView.scrollTo(0, 0) // Scroll to top
+                scrollView.scrollTo(0, 0)
             }
         }
 
@@ -99,7 +118,7 @@ class ReadAartiActivity : AppCompatActivity() {
             if (currentIndex < aartiList.size - 1) {
                 currentIndex++
                 loadAartiData(currentIndex)
-                scrollView.scrollTo(0, 0) // Scroll to top
+                scrollView.scrollTo(0, 0)
             }
         }
 
@@ -110,19 +129,16 @@ class ReadAartiActivity : AppCompatActivity() {
         initializeZoom()
     }
 
-    // --- HELPER FUNCTION TO UPDATE SCREEN ---
     private fun loadAartiData(index: Int) {
         val name = aartiList[index]
-
-        // Update Text
         tvTitle.text = name
         tvLyrics.text = AartiRepository.getAartiLyrics(name)
 
-        // Update Buttons (Show/Hide/Fade)
+        // We need to find these again because we are inside a different function scope,
+        // or we could make them global variables. Finding them by ID is safe here.
         val btnPrev = findViewById<TextView>(R.id.btnPrev)
         val btnNext = findViewById<TextView>(R.id.btnNext)
 
-        // Disable "Prev" if at start
         if (index == 0) {
             btnPrev.alpha = 0.3f
             btnPrev.isEnabled = false
@@ -131,7 +147,6 @@ class ReadAartiActivity : AppCompatActivity() {
             btnPrev.isEnabled = true
         }
 
-        // Disable "Next" if at end
         if (index == aartiList.size - 1) {
             btnNext.alpha = 0.3f
             btnNext.isEnabled = false

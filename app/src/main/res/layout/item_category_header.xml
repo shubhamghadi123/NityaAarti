@@ -9,5 +9,4 @@
     android:text="Ganesh Aarti"
     android:textColor="#D84315"
     android:textSize="18sp"
-    android:textStyle="bold"
-    android:background="#FFF4DC"/>
+    android:textStyle="bold" />

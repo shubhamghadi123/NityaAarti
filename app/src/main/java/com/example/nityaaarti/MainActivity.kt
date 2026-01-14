@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -21,12 +22,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.util.Collections
+import androidx.core.graphics.toColorInt
 
 class MainActivity : AppCompatActivity() {
 
     private var aartiList = mutableListOf<String>()
     private lateinit var adapter: HomeAdapter
     private lateinit var itemTouchHelper: ItemTouchHelper
+
+    // --- 1. STATE VARIABLES FOR MODES ---
+    private var isSortActive = false
+    private var isDeleteActive = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,6 +48,34 @@ class MainActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fabAdd).setOnClickListener {
             startActivity(Intent(this, AddAartiActivity::class.java))
         }
+
+        // --- 2. SETUP MODE BUTTONS ---
+        val btnSort = findViewById<ImageView>(R.id.btnToggleSort)
+        val btnDelete = findViewById<ImageView>(R.id.btnToggleDelete)
+
+        btnSort.setOnClickListener {
+            // Toggle Sort, Disable Delete
+            isSortActive = !isSortActive
+            isDeleteActive = false
+            updateUIModes(btnSort, btnDelete)
+            if (isSortActive) {
+                Toast.makeText(this, "Sort Mode ON: Long press to drag rows", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Sort Mode OFF", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        btnDelete.setOnClickListener {
+            // Toggle Delete, Disable Sort
+            isDeleteActive = !isDeleteActive
+            isSortActive = false
+            updateUIModes(btnSort, btnDelete)
+            if (isDeleteActive) {
+                Toast.makeText(this, "Delete Mode ON", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Delete Mode OFF", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun onResume() {
@@ -49,9 +83,22 @@ class MainActivity : AppCompatActivity() {
         loadSavedAartis()
     }
 
+    private fun updateUIModes(btnSort: ImageView, btnDelete: ImageView) {
+        // Update Adapter if it exists
+        if (::adapter.isInitialized) {
+            adapter.updateModes(isSortActive, isDeleteActive)
+        }
+
+        // Visual Feedback for Buttons (Highlight active one)
+        if (isSortActive) btnSort.alpha = 1.0f else btnSort.alpha = 0.5f
+        if (isDeleteActive) btnDelete.alpha = 1.0f else btnDelete.alpha = 0.5f
+    }
+
     private fun loadSavedAartis() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerViewAartis)
         val emptyState = findViewById<LinearLayout>(R.id.emptyStateLayout)
+        val btnSort = findViewById<ImageView>(R.id.btnToggleSort)
+        val btnDelete = findViewById<ImageView>(R.id.btnToggleDelete)
 
         aartiList = AartiStorage.getSavedAartis(this)
 
@@ -77,7 +124,10 @@ class MainActivity : AppCompatActivity() {
             )
             recyclerView.adapter = adapter
 
-            // Initialize the helper AFTER adapter is set
+            // --- 4. APPLY CURRENT MODE ON LOAD ---
+            adapter.updateModes(isSortActive, isDeleteActive)
+            updateUIModes(btnSort, btnDelete) // Keep button opacity correct
+
             setupDragAndDrop(recyclerView)
 
         } else {
@@ -100,35 +150,25 @@ class MainActivity : AppCompatActivity() {
             ): Boolean {
                 val fromPos = viewHolder.adapterPosition
                 val toPos = target.adapterPosition
-
-                // Swap data
                 Collections.swap(aartiList, fromPos, toPos)
-                // Notify adapter
                 adapter.notifyItemMoved(fromPos, toPos)
-
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) { /* Not used */ }
 
-            // Highlight logic
             override fun onSelectedChanged(viewHolder: RecyclerView.ViewHolder?, actionState: Int) {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                     if (viewHolder?.itemView is CardView) {
-                        // Using standard Color parsing
                         (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFE0B2"))
                     }
                 }
             }
 
-            // Restore logic
             override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
                 super.clearView(recyclerView, viewHolder)
-                // Save new order
                 AartiStorage.saveAartiList(this@MainActivity, aartiList)
-
-                // Reset color
                 if (viewHolder.itemView is CardView) {
                     (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFF3E0"))
                 }
@@ -140,7 +180,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// --- ADAPTER ---
 class HomeAdapter(
     private val aartiList: List<String>,
     private val onReadClick: (String) -> Unit,
@@ -148,10 +187,19 @@ class HomeAdapter(
     private val onStartDrag: (RecyclerView.ViewHolder) -> Unit
 ) : RecyclerView.Adapter<HomeAdapter.HomeViewHolder>() {
 
+    var isSortMode = false
+    var isDeleteMode = false
+
+    fun updateModes(sort: Boolean, delete: Boolean) {
+        isSortMode = sort
+        isDeleteMode = delete
+        notifyDataSetChanged()
+    }
+
     class HomeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val tvName: TextView = view.findViewById(R.id.tvAartiName)
-        val btnAction: ImageView = view.findViewById(R.id.btnAdd) // Delete button
-        val imgDrag: ImageView = view.findViewById(R.id.imgDragHandle) // Drag handle
+        val btnAction: ImageView = view.findViewById(R.id.btnAdd)
+        val imgDrag: ImageView = view.findViewById(R.id.imgDragHandle)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeViewHolder {
@@ -165,27 +213,49 @@ class HomeAdapter(
         val name = aartiList[position]
         holder.tvName.text = name
 
-        // Configure Delete Button
+        if (holder.itemView is CardView) {
+            (holder.itemView as CardView).setCardBackgroundColor("#FFD8BF".toColorInt())
+        }
+
         holder.btnAction.setImageResource(R.drawable.round_delete_forever_24)
         holder.btnAction.setColorFilter(Color.RED)
 
-        holder.btnAction.setOnClickListener {
-            onDeleteClick(name)
+        if (isDeleteMode) {
+            holder.btnAction.visibility = View.VISIBLE
+            holder.btnAction.setOnClickListener { onDeleteClick(name) }
+        } else {
+            holder.btnAction.visibility = View.GONE
         }
 
-        // Configure Read Click
+        if (isSortMode) {
+            holder.imgDrag.visibility = View.VISIBLE
+            holder.imgDrag.setOnTouchListener { _, event ->
+                if (event.action == MotionEvent.ACTION_DOWN) {
+                    onStartDrag(holder)
+                }
+                false
+            }
+        } else {
+            holder.imgDrag.visibility = View.GONE
+        }
+
+        if (isSortMode) {
+            holder.itemView.setOnClickListener(null)
+            holder.itemView.setOnLongClickListener {
+                onStartDrag(holder)
+                true
+            }
+            holder.itemView.setOnTouchListener(null)
+
+        } else {
+            holder.itemView.setOnLongClickListener(null)
+            holder.itemView.setOnClickListener {
+                onReadClick(name)
+            }
+        }
+
         holder.itemView.setOnClickListener {
             onReadClick(name)
-        }
-
-        holder.imgDrag.visibility = View.VISIBLE
-
-        // Configure Drag Handle
-        holder.imgDrag.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_DOWN) {
-                onStartDrag(holder)
-            }
-            false
         }
     }
 

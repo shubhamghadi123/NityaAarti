@@ -5,6 +5,13 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
+    <style name="Theme.App.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:statusBarColor">#FFF4DC</item>
+    </style>
+
     <style name="Theme.NityaAarti" parent="Base.Theme.NityaAarti" />
 
     <style name="CircleShape">
