@@ -27,7 +27,8 @@
             android:exported="false" />
         <activity
             android:name=".ReadAartiActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
 
         <activity
             android:name=".AddAartiActivity"

@@ -57,7 +57,7 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "त्रिगुणात्मक त्रैमूर्ती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "धन्य धन्य हो प्रदक्षिणा"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती गुरुदत्ता स्वामि सत्येंद्रनाथा"))
-        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती हरिदासस्वामी महाराजांची"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "हरिदासस्वामी महाराजांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "श्रीमत् नृसिंह सरस्वतीस्वामी महाराजांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "भूपाळी श्रीदत्तात्रेयांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "कांकडे आरती"))
@@ -74,6 +74,8 @@ class AddAartiActivity : AppCompatActivity() {
         // -- साईबाबांची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री साईबाबांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती साईबाबा"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "श्री सद्गुरू साईबाबांचे भक्तांना अभय"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "घेउनियां पंचारती करूं बाबांसी आरती"))
 
         // -- समर्थ श्रीचंद्रशेखर स्वामी महाराजांची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "समर्थ श्रीचंद्रशेखर स्वामी महाराजांची आरती"))
