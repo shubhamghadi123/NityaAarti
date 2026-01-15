@@ -56,6 +56,15 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री गुरुदत्ता आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "त्रिगुणात्मक त्रैमूर्ती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "धन्य धन्य हो प्रदक्षिणा"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती गुरुदत्ता स्वामि सत्येंद्रनाथा"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती हरिदासस्वामी महाराजांची"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "श्रीमत् नृसिंह सरस्वतीस्वामी महाराजांची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "भूपाळी श्रीदत्तात्रेयांची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "कांकडे आरती"))
+
+        // -- श्रीपाद श्रीवल्लभांची आरती --
+        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्रीपाद श्रीवल्लभांची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "श्रीपाद श्रीवल्लभ जय जय करुणाकर मूर्ती"))
 
         // -- श्री विठ्ठलाची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री विठ्ठलाची आरती"))
@@ -66,9 +75,21 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्री साईबाबांची आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती साईबाबा"))
 
+        // -- समर्थ श्रीचंद्रशेखर स्वामी महाराजांची आरती --
+        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "समर्थ श्रीचंद्रशेखर स्वामी महाराजांची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती सद्गुरुनाथा चंद्रशेखर समर्था"))
+
+        // -- श्रीसत्येंद्रनाथ स्वामी महाराजांची आरती --
+        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "श्रीसत्येंद्रनाथ स्वामी महाराजांची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "ओवाळू आरती सद्गुरु राया"))
+
         // -- ज्ञानराजा आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "ज्ञानराजा आरती"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "आरती ज्ञानराजा"))
+
+        // -- सूर्याची आरती --
+        aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "सूर्याची आरती"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "जय जय जगतम हरणा"))
 
         // -- दशावतारांची आरती --
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "दशावतारांची आरती"))
@@ -78,6 +99,7 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_HEADER, "प्रार्थना"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "घालीन लोटांगण"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "मंत्रपुष्पांजली"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "निरोप गीत"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "पसायदान"))
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerAllAartis)
