@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

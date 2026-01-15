@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class AartiAdapter(
     private val items: List<AartiListItem>,
-    private val savedAartis: List<String>,
+    private val savedAartis: MutableList<String>,
     private val onAddClick: (String) -> Unit,
     private val onItemClick: (String) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -49,6 +49,7 @@ class AartiAdapter(
         } else if (holder is AartiViewHolder) {
             holder.tvName.text = item.name
 
+            // Always hide drag handle in "Add" screen
             holder.imgDrag.visibility = View.GONE
 
             if (savedAartis.contains(item.name)) {
@@ -59,6 +60,7 @@ class AartiAdapter(
                 holder.btnAdd.setOnClickListener {
                     onAddClick(item.name)
                     holder.btnAdd.visibility = View.GONE
+                    savedAartis.add(item.name)
                 }
             }
 

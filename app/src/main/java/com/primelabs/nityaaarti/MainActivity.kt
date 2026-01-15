@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -139,7 +139,14 @@ class MainActivity : AppCompatActivity() {
     private fun setupDragAndDrop(recyclerView: RecyclerView) {
         val callback = object : ItemTouchHelper.Callback() {
 
+            override fun isLongPressDragEnabled(): Boolean {
+                return false
+            }
+
             override fun getMovementFlags(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder): Int {
+                if (!isSortActive) {
+                    return makeMovementFlags(0, 0)
+                }
                 return makeMovementFlags(ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0)
             }
 
@@ -161,7 +168,7 @@ class MainActivity : AppCompatActivity() {
                 super.onSelectedChanged(viewHolder, actionState)
                 if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
                     if (viewHolder?.itemView is CardView) {
-                        (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFE0B2"))
+                        (viewHolder.itemView as CardView).setCardBackgroundColor("#FFE0B2".toColorInt())
                     }
                 }
             }
@@ -170,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                 super.clearView(recyclerView, viewHolder)
                 AartiStorage.saveAartiList(this@MainActivity, aartiList)
                 if (viewHolder.itemView is CardView) {
-                    (viewHolder.itemView as CardView).setCardBackgroundColor(Color.parseColor("#FFF3E0"))
+                    (viewHolder.itemView as CardView).setCardBackgroundColor("#FFF3E0".toColorInt())
                 }
             }
         }
@@ -239,23 +246,27 @@ class HomeAdapter(
             holder.imgDrag.visibility = View.GONE
         }
 
-        if (isSortMode) {
-            holder.itemView.setOnClickListener(null)
-            holder.itemView.setOnLongClickListener {
-                onStartDrag(holder)
-                true
+        when {
+            isSortMode -> {
+                holder.itemView.setOnClickListener(null)
+                holder.itemView.setOnLongClickListener {
+                    onStartDrag(holder)
+                    true
+                }
+                holder.itemView.setOnTouchListener(null)
             }
-            holder.itemView.setOnTouchListener(null)
-
-        } else {
-            holder.itemView.setOnLongClickListener(null)
-            holder.itemView.setOnClickListener {
-                onReadClick(name)
+            isDeleteMode -> {
+                holder.itemView.setOnClickListener(null)
+                holder.itemView.setOnLongClickListener(null)
+                holder.itemView.isClickable = false
             }
-        }
-
-        holder.itemView.setOnClickListener {
-            onReadClick(name)
+            else -> {
+                holder.itemView.setOnLongClickListener(null)
+                holder.itemView.setOnClickListener {
+                    onReadClick(name)
+                }
+                holder.itemView.isClickable = true
+            }
         }
     }
 

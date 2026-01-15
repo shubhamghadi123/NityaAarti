@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 data class AartiListItem(
     val type: Int,       // 0 for Header, 1 for Aarti

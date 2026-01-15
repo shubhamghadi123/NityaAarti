@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Force Keep SplashActivity
+-keep class com.primelabs.nityaaarti.SplashActivity { *; }
+
+# Keep all classes in your package (Nuclear option to be safe)
+-keep class com.primelabs.nityaaarti.** { *; }

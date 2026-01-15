@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 import org.junit.Test
 

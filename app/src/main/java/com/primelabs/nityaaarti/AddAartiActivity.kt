@@ -1,4 +1,4 @@
-package com.example.nityaaarti
+package com.primelabs.nityaaarti
 
 import android.content.Intent
 import android.os.Bundle
@@ -107,7 +107,7 @@ class AddAartiActivity : AppCompatActivity() {
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerAllAartis)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val alreadySaved = AartiStorage.getSavedAartis(this)
+        val alreadySaved = AartiStorage.getSavedAartis(this).toMutableList()
 
         val adapter = AartiAdapter(
             items = aartiList,      // Your full list
