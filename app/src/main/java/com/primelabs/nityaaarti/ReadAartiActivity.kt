@@ -22,20 +22,14 @@ import kotlin.math.min
 
 class ReadAartiActivity : AppCompatActivity() {
 
-    companion object {
-        var hasSeenTipThisSession = false
-    }
-
     private lateinit var scaleGestureDetector: ScaleGestureDetector
     private var currentTextSizeSp = 20f
 
-    // UI Variables
     private lateinit var tvLyrics: TextView
     private lateinit var tvTitle: TextView
     private lateinit var scrollView: ScrollView
     private lateinit var prefs: SharedPreferences
 
-    // Navigation Variables
     private var aartiList = listOf<String>()
     private var currentIndex = 0
 
@@ -65,12 +59,12 @@ class ReadAartiActivity : AppCompatActivity() {
 
         tvLyrics.setTextSize(TypedValue.COMPLEX_UNIT_SP, currentTextSizeSp)
 
-        // ZOOM TIP OVERLAY LOGIC
-        if (!hasSeenTipThisSession) {
+        val tipShowCount = prefs.getInt("TIP_SHOW_COUNT", 0)
+
+        if (tipShowCount < 5) {
             overlayTip.visibility = View.VISIBLE
 
-            // Mark it as seen immediately for the next Aarti
-            hasSeenTipThisSession = true
+            prefs.edit { putInt("TIP_SHOW_COUNT", tipShowCount + 1) }
 
             overlayTip.setOnClickListener {
                 overlayTip.animate()
@@ -91,7 +85,6 @@ class ReadAartiActivity : AppCompatActivity() {
             bottomBar.visibility = View.VISIBLE
         }
 
-        // --- 5. LOAD DATA & NAVIGATION SETUP ---
         aartiList = AartiStorage.getSavedAartis(this)
         val initialName = intent.getStringExtra("AARTI_NAME") ?: ""
         currentIndex = aartiList.indexOf(initialName)
@@ -105,7 +98,6 @@ class ReadAartiActivity : AppCompatActivity() {
             btnNext.visibility = View.GONE
         }
 
-        // --- 6. BUTTON LISTENERS ---
         btnPrev.setOnClickListener {
             if (currentIndex > 0) {
                 currentIndex--
@@ -134,8 +126,6 @@ class ReadAartiActivity : AppCompatActivity() {
         tvTitle.text = name
         tvLyrics.text = AartiRepository.getAartiLyrics(name)
 
-        // We need to find these again because we are inside a different function scope,
-        // or we could make them global variables. Finding them by ID is safe here.
         val btnPrev = findViewById<TextView>(R.id.btnPrev)
         val btnNext = findViewById<TextView>(R.id.btnNext)
 
