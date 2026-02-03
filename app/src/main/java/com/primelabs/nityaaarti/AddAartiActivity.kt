@@ -102,7 +102,8 @@ class AddAartiActivity : AppCompatActivity() {
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "घालीन लोटांगण"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "मंत्रपुष्पांजली"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "निरोप गीत"))
-        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "गणपती स्तोत्र"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "गणपती स्तोत्र (मराठी)"))
+        aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "गणपती स्तोत्र (संस्कृत)"))
         aartiList.add(AartiListItem(AartiListItem.TYPE_AARTI, "पसायदान"))
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyclerAllAartis)
